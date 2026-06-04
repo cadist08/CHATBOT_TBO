@@ -1,115 +1,124 @@
 from FSM import State
 
 
-class ChatbotEngine:
+class GovernmentChatbot:
+
     def __init__(self):
         self.state = State.START
 
-    def process(self, user_input):
-        user_input = user_input.lower()
+    def process(self, message):
+
+        msg = message.lower()
 
         if self.state == State.START:
             self.state = State.MENU
-            return (
-                "Selamat datang di Chatbot Layanan Publik.\n"
-                "Pilih layanan:\n"
-                "1. Informasi KTP\n"
-                "2. Informasi Kartu Keluarga (KK)\n"
-                "3. Informasi Akta Kelahiran\n"
-                "4. Pengaduan Masyarakat\n"
-                "5. Keluar"
-            )
 
-        elif self.state == State.MENU:
+            return """
+Selamat datang di Chatbot Layanan Publik Indonesia 🇮🇩
 
-            if user_input == "1":
-                self.state = State.KTP
-                return (
-                    "Persyaratan pembuatan KTP:\n"
-                    "- Berusia 17 tahun atau sudah menikah\n"
-                    "- Membawa Kartu Keluarga\n"
-                    "- Datang ke kantor Disdukcapil"
-                )
+Layanan yang tersedia:
 
-            elif user_input == "2":
-                self.state = State.KK
-                return (
-                    "Persyaratan pembuatan KK:\n"
-                    "- Surat pengantar RT/RW\n"
-                    "- Buku nikah/akta perkawinan\n"
-                    "- Dokumen pendukung lainnya"
-                )
+1. KTP
+2. KK
+3. Akta Kelahiran
+4. SIM
+5. Paspor
+6. BPJS
+7. Pajak
+8. Pengaduan
+9. Keluar
 
-            elif user_input == "3":
-                self.state = State.AKTA
-                return (
-                    "Persyaratan Akta Kelahiran:\n"
-                    "- Surat kelahiran dari rumah sakit\n"
-                    "- KTP orang tua\n"
-                    "- Kartu Keluarga"
-                )
+Ketik nomor layanan.
+"""
 
-            elif user_input == "4":
+        if self.state == State.MENU:
+
+            if msg == "1":
+                return """
+Persyaratan KTP:
+
+• Berusia 17 tahun
+• Membawa KK
+• Datang ke Disdukcapil
+"""
+
+            elif msg == "2":
+                return """
+Persyaratan KK:
+
+• Surat pengantar RT/RW
+• Buku Nikah
+• Dokumen pendukung
+"""
+
+            elif msg == "3":
+                return """
+Persyaratan Akta Kelahiran:
+
+• Surat kelahiran
+• KTP orang tua
+• KK
+"""
+
+            elif msg == "4":
+                return """
+Informasi SIM:
+
+• Fotokopi KTP
+• Surat kesehatan
+• Tes teori dan praktik
+"""
+
+            elif msg == "5":
+                return """
+Informasi Paspor:
+
+• E-KTP
+• KK
+• Akta Kelahiran
+• Daftar melalui aplikasi M-Paspor
+"""
+
+            elif msg == "6":
+                return """
+Informasi BPJS:
+
+• KTP
+• KK
+• Nomor HP aktif
+"""
+
+            elif msg == "7":
+                return """
+Informasi Pajak:
+
+• NPWP
+• EFIN
+• Lapor melalui DJP Online
+"""
+
+            elif msg == "8":
                 self.state = State.PENGADUAN
-                return (
-                    "Silakan tuliskan pengaduan Anda.\n"
-                    "Contoh: Jalan rusak di Desa Sukamaju."
-                )
 
-            elif user_input == "5":
+                return """
+Silakan tuliskan pengaduan Anda.
+"""
+
+            elif msg == "9":
                 self.state = State.EXIT
+
                 return "Terima kasih telah menggunakan layanan kami."
 
-            else:
-                return "Pilihan tidak tersedia. Masukkan angka 1-5."
+            return "Pilihan tidak tersedia."
 
-        elif self.state == State.KTP:
-            self.state = State.MENU
-            return (
-                "Kembali ke menu utama.\n"
-                "1. KTP\n"
-                "2. KK\n"
-                "3. Akta Kelahiran\n"
-                "4. Pengaduan\n"
-                "5. Keluar"
-            )
+        if self.state == State.PENGADUAN:
 
-        elif self.state == State.KK:
-            self.state = State.MENU
-            return (
-                "Kembali ke menu utama.\n"
-                "1. KTP\n"
-                "2. KK\n"
-                "3. Akta Kelahiran\n"
-                "4. Pengaduan\n"
-                "5. Keluar"
-            )
-
-        elif self.state == State.AKTA:
-            self.state = State.MENU
-            return (
-                "Kembali ke menu utama.\n"
-                "1. KTP\n"
-                "2. KK\n"
-                "3. Akta Kelahiran\n"
-                "4. Pengaduan\n"
-                "5. Keluar"
-            )
-
-        elif self.state == State.PENGADUAN:
-            pengaduan = user_input
             self.state = State.MENU
 
-            return (
-                f"Pengaduan Anda telah diterima:\n'{pengaduan}'\n\n"
-                "Terima kasih atas laporan Anda.\n"
-                "Kembali ke menu utama.\n"
-                "1. KTP\n"
-                "2. KK\n"
-                "3. Akta Kelahiran\n"
-                "4. Pengaduan\n"
-                "5. Keluar"
-            )
+            return f"""
+Pengaduan diterima:
 
-        elif self.state == State.EXIT:
-            return "Program selesai."
+'{message}'
+
+Laporan akan diteruskan ke instansi terkait.
+"""
