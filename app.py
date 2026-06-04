@@ -1,24 +1,25 @@
-from engine import ChatbotEngine
+from flask import Flask, render_template, request, jsonify
+from engine import GovernmentChatbot
 
+app = Flask(__name__)
 
-def main():
-    bot = ChatbotEngine()
+bot = GovernmentChatbot()
 
-    print("=" * 50)
-    print("CHATBOT LAYANAN PUBLIK")
-    print("=" * 50)
+@app.route("/")
+def home():
+    return render_template("index.html")
 
-    print(bot.process("mulai"))
+@app.route("/chat", methods=["POST"])
+def chat():
 
-    while True:
-        user_input = input("\nAnda : ")
+    data = request.get_json()
+    message = data["message"]
 
-        response = bot.process(user_input)
-        print("\nBot :", response)
+    reply = bot.process(message)
 
-        if bot.state == "EXIT":
-            break
-
+    return jsonify({
+        "reply": reply
+    })
 
 if __name__ == "__main__":
-    main()
+    app.run(debug=True)
